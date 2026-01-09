@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nn-4-audio-digit"
+version = "0.1.0"
+description = "neural net for audio classification"
+requires-python = ">=3.9"
+
+dependencies = [
+    "sounddevice",
+    "pydub",
+]
+
+[tool.setuptools.packages.find] 
+where = ["."]
+exclude = ["all_audio_files*", "wav_audio_files*", "au*", "venv*", ".venv*"]
