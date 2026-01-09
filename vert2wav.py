@@ -5,7 +5,7 @@ import os
 import random
 import sys
 
-def conToWav(path_to_folder): # Converts unprocessed audio files in path folder to wav audio files then places them in the wav folder
+def conToWav(path_to_folder, path_to_outputfolder): # Converts unprocessed audio files in path folder to wav audio files then places them in the wav folder
 
     #-------------------------------------------------------- This code is for saving the file index in \all_audio_files directory so we don't convert the same file multiple times
     FILE_INDEX = 0 
@@ -20,24 +20,16 @@ def conToWav(path_to_folder): # Converts unprocessed audio files in path folder 
 
     for x,y in enumerate(listofFiles[FILE_INDEX:]):     #Converts audio files to wav
         try:
-            if y[1] == '.mp4':
-                FILE_INDEX = max(FILE_INDEX,x+1)
-                input = AudioSegment.from_file(str(y[2]), format = 'mp4')
-                input.export("C:\\Users\\sarmi\\daudiorec\\wav_audio_files\\"+y[0], format='wav')
-            elif y[1] == '.mp3':
-                FILE_INDEX = max(FILE_INDEX,x+1)
-                input = AudioSegment.from_file(str(y[2]), format = 'mp3')
-                input.export("C:\\Users\\sarmi\\daudiorec\\wav_audio_files\\"+y[0], format='wav')
-            elif y[1] == '.mpeg-4':
-                FILE_INDEX = max(FILE_INDEX,x+1)
-                input = AudioSegment.from_file(str(y[2]), format = 'mpeg-4')
-                input.export("C:\\Users\\sarmi\\daudiorec\\wav_audio_files\\"+y[0], format='wav')
+            if y[1] != '.wav':
+                input = AudioSegment.from_file(str(y[2]), format = y[1][1:])
+                input.export(path_to_outputfolder+y[0], format='wav')
             elif y[1] == '.wav':
-                FILE_INDEX = max(FILE_INDEX,x+1)
-                shutil.copy(str(y[[2]]),"C:\\Users\\sarmi\\daudiorec\\wav_audio_files\\"+y[0])
+                shutil.copy(str(y[2]), path_to_outputfolder + y[0])
             else: # return
                 print("Unidentified file format")
                 raise Exception
+            FILE_INDEX +=1
+            
         except Exception as e:
             print(e)
             with open('ind.txt',mode='w') as f:
@@ -79,9 +71,7 @@ def splitInto(path_to_folder, train_prob, val_prob, test_prob, path_to_train, pa
             except Exception as e:
                 print(e)
                 sys.exit()
-                
 
-   
         
 
 if __name__ == '__main__':
